@@ -1,0 +1,6 @@
+@Topt_like_asp_webapi_HostAddress = http://localhost:5010
+
+GET {{Topt_like_asp_webapi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
