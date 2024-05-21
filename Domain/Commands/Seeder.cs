@@ -12,7 +12,7 @@ namespace Topt_like_asp_webapi.Domain.Commands
     {
         private readonly DBContext _context = context;
 
-        public void SeedDataContext()
+        async public void SeedDataContext()
         {
             var guid1 = Guid.NewGuid();
 
@@ -24,6 +24,7 @@ namespace Topt_like_asp_webapi.Domain.Commands
 
             };
 
+
             if (!_context.Users.Any())
             {
                 _context.Users.Add(user);
@@ -32,7 +33,7 @@ namespace Topt_like_asp_webapi.Domain.Commands
                 Thread.Sleep(10000);
 
                 User updateUsser = _context.Users.Find(user.Id);
-                Console.WriteLine("log | updateUsser.UpdatedAt: {0}",updateUsser.UpdatedAt);
+                Console.WriteLine("log | updateUsser.UpdatedAt: {0}", updateUsser.UpdatedAt);
                 updateUsser.Name = "ddd";
                 _context.Users.Update(updateUsser);
                 _context.SaveChanges();
@@ -53,11 +54,27 @@ namespace Topt_like_asp_webapi.Domain.Commands
                 Thread.Sleep(10000);
 
                 Space updatedSpace = _context.Spaces.FirstOrDefault();
-                Console.WriteLine("log | updateSpace.UpdatedAt: {0}",updatedSpace.UpdatedAt);
+                Console.WriteLine("log | updateSpace.UpdatedAt: {0}", updatedSpace.UpdatedAt);
                 updatedSpace.Title = "ddd";
                 _context.Spaces.Update(updatedSpace);
                 _context.SaveChanges();
             }
+
+
+
+            // User userLoop = new User()
+            // {
+            //     GoogleId = "122334",
+            //     Name = "test",
+
+            // };
+
+
+            // for (int i = 0; i < 12; i++)
+            // {
+            //     _context.Users.Add(userLoop);
+            //     await _context.SaveChangesAsync();
+            // }
 
         }
     }
