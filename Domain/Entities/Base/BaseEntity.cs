@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Topt_like_asp_webapi.Domain.Entities.Base
+namespace Topy_like_asp_webapi.Domain.Entities.Base
 {
     public class BaseEntity
     {

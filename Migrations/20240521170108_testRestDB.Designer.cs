@@ -5,14 +5,14 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using Topt_like_asp_webapi.Domain.DBContexts;
+using Topy_like_asp_webapi.Domain.DBContexts;
 
 #nullable disable
 
-namespace Topt_like_asp_webapi.Migrations
+namespace Topy_like_asp_webapi.Migrations
 {
     [DbContext(typeof(DBContext))]
-    [Migration("20240521114124_testRestDB")]
+    [Migration("20240521170108_testRestDB")]
     partial class testRestDB
     {
         /// <inheritdoc />
@@ -25,7 +25,7 @@ namespace Topt_like_asp_webapi.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Topt_like_asp_webapi.Domain.Entities.Collection", b =>
+            modelBuilder.Entity("Topy_like_asp_webapi.Domain.Entities.Collection", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -57,7 +57,7 @@ namespace Topt_like_asp_webapi.Migrations
                     b.ToTable("Collections");
                 });
 
-            modelBuilder.Entity("Topt_like_asp_webapi.Domain.Entities.Space", b =>
+            modelBuilder.Entity("Topy_like_asp_webapi.Domain.Entities.Space", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -84,7 +84,7 @@ namespace Topt_like_asp_webapi.Migrations
                     b.ToTable("Spaces");
                 });
 
-            modelBuilder.Entity("Topt_like_asp_webapi.Domain.Entities.Tab", b =>
+            modelBuilder.Entity("Topy_like_asp_webapi.Domain.Entities.Tab", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -124,7 +124,7 @@ namespace Topt_like_asp_webapi.Migrations
                     b.ToTable("Tabs");
                 });
 
-            modelBuilder.Entity("Topt_like_asp_webapi.Domain.Entities.User", b =>
+            modelBuilder.Entity("Topy_like_asp_webapi.Domain.Entities.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -153,15 +153,15 @@ namespace Topt_like_asp_webapi.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("Topt_like_asp_webapi.Domain.Entities.Collection", b =>
+            modelBuilder.Entity("Topy_like_asp_webapi.Domain.Entities.Collection", b =>
                 {
-                    b.HasOne("Topt_like_asp_webapi.Domain.Entities.Space", "Space")
+                    b.HasOne("Topy_like_asp_webapi.Domain.Entities.Space", "Space")
                         .WithMany("Collections")
                         .HasForeignKey("SpaceId")
                         .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
 
-                    b.HasOne("Topt_like_asp_webapi.Domain.Entities.User", "User")
+                    b.HasOne("Topy_like_asp_webapi.Domain.Entities.User", "User")
                         .WithMany("Collections")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.ClientCascade)
@@ -172,9 +172,9 @@ namespace Topt_like_asp_webapi.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Topt_like_asp_webapi.Domain.Entities.Space", b =>
+            modelBuilder.Entity("Topy_like_asp_webapi.Domain.Entities.Space", b =>
                 {
-                    b.HasOne("Topt_like_asp_webapi.Domain.Entities.User", "User")
+                    b.HasOne("Topy_like_asp_webapi.Domain.Entities.User", "User")
                         .WithMany("Spaces")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.ClientCascade)
@@ -183,15 +183,15 @@ namespace Topt_like_asp_webapi.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Topt_like_asp_webapi.Domain.Entities.Tab", b =>
+            modelBuilder.Entity("Topy_like_asp_webapi.Domain.Entities.Tab", b =>
                 {
-                    b.HasOne("Topt_like_asp_webapi.Domain.Entities.Collection", "Collection")
+                    b.HasOne("Topy_like_asp_webapi.Domain.Entities.Collection", "Collection")
                         .WithMany("Tabs")
                         .HasForeignKey("CollectionId")
                         .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
 
-                    b.HasOne("Topt_like_asp_webapi.Domain.Entities.User", "User")
+                    b.HasOne("Topy_like_asp_webapi.Domain.Entities.User", "User")
                         .WithMany("Tabs")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.ClientCascade)
@@ -202,17 +202,17 @@ namespace Topt_like_asp_webapi.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Topt_like_asp_webapi.Domain.Entities.Collection", b =>
+            modelBuilder.Entity("Topy_like_asp_webapi.Domain.Entities.Collection", b =>
                 {
                     b.Navigation("Tabs");
                 });
 
-            modelBuilder.Entity("Topt_like_asp_webapi.Domain.Entities.Space", b =>
+            modelBuilder.Entity("Topy_like_asp_webapi.Domain.Entities.Space", b =>
                 {
                     b.Navigation("Collections");
                 });
 
-            modelBuilder.Entity("Topt_like_asp_webapi.Domain.Entities.User", b =>
+            modelBuilder.Entity("Topy_like_asp_webapi.Domain.Entities.User", b =>
                 {
                     b.Navigation("Collections");
 

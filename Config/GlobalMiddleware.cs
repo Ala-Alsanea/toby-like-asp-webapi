@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Topt_like_asp_webapi.Config
+namespace Topy_like_asp_webapi.Config
 {
     public class GlobalMiddleware
     {

@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Topt_like_asp_webapi.Domain.Commands;
+using Topy_like_asp_webapi.Domain.Commands;
 
-namespace Topt_like_asp_webapi.Config
+namespace Topy_like_asp_webapi.Config
 {
     public class CliRegistry
     {

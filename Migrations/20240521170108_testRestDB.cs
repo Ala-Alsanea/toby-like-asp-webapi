@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Topt_like_asp_webapi.Migrations
+namespace Topy_like_asp_webapi.Migrations
 {
     /// <inheritdoc />
     public partial class testRestDB : Migration

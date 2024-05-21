@@ -4,9 +4,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Topt_like_asp_webapi.Domain.Entities.Base;
+using Topy_like_asp_webapi.Domain.Entities.Base;
 
-namespace Topt_like_asp_webapi.Domain.Entities
+namespace Topy_like_asp_webapi.Domain.Entities
 {
     public class Tab : BaseEntity
     {

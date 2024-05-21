@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Topt_like_asp_webapi.Domain.DBContexts;
-using Topt_like_asp_webapi.Domain.Entities;
-using Topt_like_asp_webapi.Domain.Repositories.Interfaces;
+using Topy_like_asp_webapi.Domain.DBContexts;
+using Topy_like_asp_webapi.Domain.Entities;
+using Topy_like_asp_webapi.Domain.Repositories.Interfaces;
 
-namespace Topt_like_asp_webapi.Domain.Commands
+namespace Topy_like_asp_webapi.Domain.Commands
 {
     public class Seeder(
         IRepository<User> UserRepository,

@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Topt_like_asp_webapi.Domain.Entities;
-using Topt_like_asp_webapi.Domain.Entities.Base;
+using Topy_like_asp_webapi.Domain.Entities;
+using Topy_like_asp_webapi.Domain.Entities.Base;
 
-namespace Topt_like_asp_webapi.Domain.DBContexts
+namespace Topy_like_asp_webapi.Domain.DBContexts
 {
     public class DBContext : DbContext
     {

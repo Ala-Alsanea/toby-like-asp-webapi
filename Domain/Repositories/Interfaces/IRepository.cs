@@ -4,10 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using PostApi.Infrastructure.Pagination;
-using Topt_like_asp_webapi.Domain.DBContexts;
-using Topt_like_asp_webapi.Domain.Entities.Base;
+using Topy_like_asp_webapi.Domain.DBContexts;
+using Topy_like_asp_webapi.Domain.Entities.Base;
 
-namespace Topt_like_asp_webapi.Domain.Repositories.Interfaces
+namespace Topy_like_asp_webapi.Domain.Repositories.Interfaces
 {
     public interface IRepository<T> where T : BaseEntity
     {

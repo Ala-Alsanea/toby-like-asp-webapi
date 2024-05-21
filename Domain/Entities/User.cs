@@ -4,10 +4,10 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
-using Topt_like_asp_webapi.Domain.Entities.Base;
-using Topt_like_asp_webapi.Domain.Enums;
+using Topy_like_asp_webapi.Domain.Entities.Base;
+using Topy_like_asp_webapi.Domain.Enums;
 
-namespace Topt_like_asp_webapi.Domain.Entities
+namespace Topy_like_asp_webapi.Domain.Entities
 {
     public class User : BaseEntity
     {
