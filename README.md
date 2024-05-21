@@ -11,7 +11,7 @@
 
 ## To-do
 - [ ] imple req and res schema (dto like) 
-- [ ] setup entities
+- [ ] setup entities and relations
 - [ ] setup controllers
 - [ ] setup services 
 - [ ] setup repos 

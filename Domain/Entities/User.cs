@@ -1,20 +1,23 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
+using Topt_like_asp_webapi.Domain.Entities.Base;
 using Topt_like_asp_webapi.Domain.Enums;
 
 namespace Topt_like_asp_webapi.Domain.Entities
 {
-    public class User
+    public class User : BaseEntity
     {
-        [Key]
-        public Guid Id { get; set; }
-        public string name { get; set; }
-        public string googleId { get; set; }
-        public Role role { get; set; } = Role.USER;
+        public string Name { get; set; }
+        public string GoogleId { get; set; }
+        public Role Role { get; set; } = Role.USER;
 
+        public ICollection<Space> Spaces { get; set; }
+        public ICollection<Collection> Collections { get; set; }
+        public ICollection<Tab> Tabs { get; set; }
 
     }
 }

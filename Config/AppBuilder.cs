@@ -15,7 +15,8 @@ namespace Topt_like_asp_webapi.Config
             // Add services to the container.
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 
-            builder.Services.AddDbContext<PostgresContext>(opt => opt.UseNpgsql(builder.Configuration.GetConnectionString("PostgresConnectionString")));
+            builder.Services.AddDbContext<DBContext>(opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("SqlServerConnectionString")));
+            // builder.Services.AddDbContext<DBContext>(opt => opt.UseNpgsql(builder.Configuration.GetConnectionString("PostgresConnectionString")));
 
             builder.Services.AddTransient<Seeder>();
             builder.Services.AddTransient<Truncate>();
