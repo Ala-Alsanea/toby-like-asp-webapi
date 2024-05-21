@@ -2,45 +2,32 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using PostApi.Infrastructure.Pagination;
 using Topt_like_asp_webapi.Domain.DBContexts;
+using Topt_like_asp_webapi.Domain.Entities.Base;
 
 namespace Topt_like_asp_webapi.Domain.Repositories.Interfaces
 {
-    public interface IRepository<T>
+    public interface IRepository<T> where T : BaseEntity
     {
+        public DbSet<T> entity { get; set; }
+
 
         // PagedList<T> All(int page, int pageSize);
-        public PagedList<T> All(int page, int pageSize)
-        {
-            throw new NotImplementedException();
-        }
-        public void Create(T model)
-        {
-            throw new NotImplementedException();
-        }
+        public PagedList<T> All(int page, int pageSize);
 
-        public void Delete(T model)
-        {
-            throw new NotImplementedException();
-        }
+        public void Create(T model);
 
-        public T? Get(int id)
-        {
-            throw new NotImplementedException();
-        }
+        public void Delete(T model);
 
-        public IEnumerable<T> Index()
-        {
-            throw new NotImplementedException();
-        }
+        public T? Get(Guid id);
 
-        public void Update(T model)
-        {
-            throw new NotImplementedException();
-        }
+        public IEnumerable<T> Index();
+
+        public void Update(T model);
 
 
-        
+
     }
 }

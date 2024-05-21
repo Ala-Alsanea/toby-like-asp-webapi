@@ -12,7 +12,7 @@ using Topt_like_asp_webapi.Domain.DBContexts;
 namespace Topt_like_asp_webapi.Migrations
 {
     [DbContext(typeof(DBContext))]
-    [Migration("20240521084905_testRestDB")]
+    [Migration("20240521114124_testRestDB")]
     partial class testRestDB
     {
         /// <inheritdoc />

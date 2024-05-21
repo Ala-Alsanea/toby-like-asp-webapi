@@ -20,35 +20,35 @@ namespace Topt_like_asp_webapi.Domain.DBContexts
         public DbSet<Tab> Tabs { get; set; }
 
 
-        public override int SaveChanges()
-        {
-            UpdateUpdatedProperty<User>();
-            UpdateUpdatedProperty<Space>();
-            UpdateUpdatedProperty<Collection>();
-            UpdateUpdatedProperty<Tab>();
-            return base.SaveChanges();
-        }
+        // public override int SaveChanges()
+        // {
+        //     UpdateUpdatedProperty<User>();
+        //     UpdateUpdatedProperty<Space>();
+        //     UpdateUpdatedProperty<Collection>();
+        //     UpdateUpdatedProperty<Tab>();
+        //     return base.SaveChanges();
+        // }
 
-        public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            UpdateUpdatedProperty<User>();
-            UpdateUpdatedProperty<Space>();
-            UpdateUpdatedProperty<Collection>();
-            UpdateUpdatedProperty<Tab>();
-            return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
-        }
+        // public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default(CancellationToken))
+        // {
+        //     UpdateUpdatedProperty<User>();
+        //     UpdateUpdatedProperty<Space>();
+        //     UpdateUpdatedProperty<Collection>();
+        //     UpdateUpdatedProperty<Tab>();
+        //     return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+        // }
 
-        private void UpdateUpdatedProperty<T>() where T : BaseEntity
-        {
-            var modifiedSourceInfo =
-                ChangeTracker.Entries<T>()
-                    .Where(e => e.State == EntityState.Added || e.State == EntityState.Modified);
+        // private void UpdateUpdatedProperty<T>() where T : BaseEntity
+        // {
+        //     var modifiedSourceInfo =
+        //         ChangeTracker.Entries<T>()
+        //             .Where(e => e.State == EntityState.Added || e.State == EntityState.Modified);
 
-            foreach (var entry in modifiedSourceInfo)
-            {
-                entry.Property("UpdatedAt").CurrentValue = DateTime.UtcNow;
-            }
-        }
+        //     foreach (var entry in modifiedSourceInfo)
+        //     {
+        //         entry.Property("UpdatedAt").CurrentValue = DateTime.UtcNow;
+        //     }
+        // }
 
         // protected override void OnModelCreating(ModelBuilder modelBuilder)
         // {

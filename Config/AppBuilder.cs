@@ -5,6 +5,10 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Topt_like_asp_webapi.Domain.Commands;
 using Topt_like_asp_webapi.Domain.DBContexts;
+using Topt_like_asp_webapi.Domain.Entities;
+using Topt_like_asp_webapi.Domain.Entities.Base;
+using Topt_like_asp_webapi.Domain.Repositories;
+using Topt_like_asp_webapi.Domain.Repositories.Interfaces;
 
 namespace Topt_like_asp_webapi.Config
 {
@@ -20,6 +24,12 @@ namespace Topt_like_asp_webapi.Config
 
             builder.Services.AddTransient<Seeder>();
             builder.Services.AddTransient<Truncate>();
+            
+            builder.Services.AddTransient<IRepository<User>,Repository<User>>();
+            builder.Services.AddTransient<IRepository<Space>,Repository<Space>>();
+            builder.Services.AddTransient<IRepository<Collection>,Repository<Collection>>();
+            builder.Services.AddTransient<IRepository<Tab>,Repository<Tab>>();
+
 
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();

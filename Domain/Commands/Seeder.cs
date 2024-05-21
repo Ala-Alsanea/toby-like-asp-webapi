@@ -5,12 +5,19 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Topt_like_asp_webapi.Domain.DBContexts;
 using Topt_like_asp_webapi.Domain.Entities;
+using Topt_like_asp_webapi.Domain.Repositories.Interfaces;
 
 namespace Topt_like_asp_webapi.Domain.Commands
 {
-    public class Seeder(DBContext context)
+    public class Seeder(
+        IRepository<User> UserRepository,
+        IRepository<Space> SpaceRepository
+        )
     {
-        private readonly DBContext _context = context;
+        private readonly IRepository<User> _userRepository = UserRepository;
+        private readonly IRepository<Space> _spaceRepository = SpaceRepository;
+
+        // private readonly DBContext _context = context;
 
         async public void SeedDataContext()
         {
@@ -25,22 +32,21 @@ namespace Topt_like_asp_webapi.Domain.Commands
             };
 
 
-            if (!_context.Users.Any())
+            if (!_userRepository.entity.Any())
             {
-                _context.Users.Add(user);
-                _context.SaveChanges();
+                _userRepository.Create(user);
 
                 Thread.Sleep(10000);
 
-                User updateUsser = _context.Users.Find(user.Id);
+                User updateUsser = _userRepository.Get(user.Id);
                 Console.WriteLine("log | updateUsser.UpdatedAt: {0}", updateUsser.UpdatedAt);
                 updateUsser.Name = "ddd";
-                _context.Users.Update(updateUsser);
-                _context.SaveChanges();
+                _userRepository.Update(user);
+
             }
 
 
-            if (!_context.Spaces.Any())
+            if (!_spaceRepository.entity.Any())
             {
                 Space space = new Space()
                 {
@@ -48,16 +54,15 @@ namespace Topt_like_asp_webapi.Domain.Commands
                     User = user
 
                 };
-                _context.Spaces.Add(space);
-                _context.SaveChanges();
+                _spaceRepository.Create(space);
 
                 Thread.Sleep(10000);
 
-                Space updatedSpace = _context.Spaces.FirstOrDefault();
+                Space updatedSpace = _spaceRepository.entity.FirstOrDefault();
                 Console.WriteLine("log | updateSpace.UpdatedAt: {0}", updatedSpace.UpdatedAt);
                 updatedSpace.Title = "ddd";
-                _context.Spaces.Update(updatedSpace);
-                _context.SaveChanges();
+
+                _spaceRepository.Update(updatedSpace);
             }
 
 

@@ -13,52 +13,47 @@ namespace Topt_like_asp_webapi.Domain.Repositories
     public class Repository<T> : IRepository<T> where T : BaseEntity
     {
         private readonly DBContext _context;
-        private DbSet<T> entities;
+        public DbSet<T> entity { get; set; }
 
         public Repository(DBContext context)
         {
             _context = context;
-            entities = context.Set<T>();
+            entity = context.Set<T>();
         }
 
         public PagedList<T> All(int page, int pageSize)
         {
-            var result = entities.OrderBy(model => model.Id);
+            var result = entity.OrderBy(model => model.Id);
             return PagedList<T>.Paginate(result, page, pageSize);
         }
 
         public void Create(T model)
         {
-            entities.Add(model);
+            entity.Add(model);
             _context.SaveChanges();
         }
 
         public void Delete(T model)
         {
-            entities.Remove(model);
+            entity.Remove(model);
             _context.SaveChanges();
         }
 
         public T Get(Guid id)
         {
-            return entities.FirstOrDefault(model => model.Id == id);
+            return entity.FirstOrDefault(model => model.Id == id);
         }
 
         public IEnumerable<T> Index()
         {
-            return entities.ToList();
+            return entity.ToList();
         }
 
         public void Update(T model)
         {
             _context.Entry(model).State = EntityState.Modified;
+            model.UpdatedAt = DateTime.UtcNow;
             _context.SaveChanges();
         }
-
-        // public DbSet<T> Custom  ()
-        // {
-        //     _context.Entry(model).State = EntityState.Modified;
-        //     _context.SaveChanges();
-        // }
     }
 }
