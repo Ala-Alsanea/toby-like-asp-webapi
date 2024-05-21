@@ -22,14 +22,14 @@ namespace Topt_like_asp_webapi.Config
             // builder.Services.AddDbContext<DBContext>(opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("SqlServerConnectionString")));
             builder.Services.AddDbContext<DBContext>(opt => opt.UseNpgsql(builder.Configuration.GetConnectionString("PostgresConnectionString")));
 
+            
+            builder.Services.AddScoped<IRepository<User>,Repository<User>>();
+            builder.Services.AddScoped<IRepository<Space>,Repository<Space>>();
+            builder.Services.AddScoped<IRepository<Collection>,Repository<Collection>>();
+            builder.Services.AddScoped<IRepository<Tab>,Repository<Tab>>();
+
             builder.Services.AddTransient<Seeder>();
             builder.Services.AddTransient<Truncate>();
-            
-            builder.Services.AddTransient<IRepository<User>,Repository<User>>();
-            builder.Services.AddTransient<IRepository<Space>,Repository<Space>>();
-            builder.Services.AddTransient<IRepository<Collection>,Repository<Collection>>();
-            builder.Services.AddTransient<IRepository<Tab>,Repository<Tab>>();
-
 
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
