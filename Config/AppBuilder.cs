@@ -26,10 +26,12 @@ namespace Topy_like_asp_webapi.Config
             builder.Services.AddDbContext<DBContext>(opt => opt.UseNpgsql(builder.Configuration.GetConnectionString("PostgresConnectionString")));
 
 
-            builder.Services.AddScoped<IRepository<User>, Repository<User>>();
-            builder.Services.AddScoped<IRepository<Space>, Repository<Space>>();
-            builder.Services.AddScoped<IRepository<Collection>, Repository<Collection>>();
-            builder.Services.AddScoped<IRepository<Tab>, Repository<Tab>>();
+            // builder.Services.AddScoped<IRepository<User>, Repository<User>>();
+            // builder.Services.AddScoped<IRepository<Space>, Repository<Space>>();
+            // builder.Services.AddScoped<IRepository<Collection>, Repository<Collection>>();
+            // builder.Services.AddScoped<IRepository<Tab>, Repository<Tab>>();
+
+            builder.Services.AddScoped( typeof(IRepository<>), typeof(Repository<>));
 
             builder.Services.AddTransient<Seeder>();
             builder.Services.AddTransient<Truncate>();
