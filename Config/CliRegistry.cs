@@ -8,7 +8,7 @@ namespace Topy_like_asp_webapi.Config
 {
     public class CliRegistry
     {
-        public static void Boot(WebApplication app, string[] args)
+        async public static void Boot(WebApplication app, string[] args)
         {
             if (args.Length == 1 && args[0].ToLower() == "truncate-db")
             {
@@ -20,6 +20,13 @@ namespace Topy_like_asp_webapi.Config
             if (args.Length == 1 && args[0].ToLower() == "seed-db")
             {
                 SeedData(app);
+                // terminate the application and throw an exception
+                app.StopAsync().GetAwaiter().GetResult();
+            }
+
+            if (args.Length == 1 && args[0].ToLower() == "seed-es")
+            {
+                await SeedDataToElasticsearch(app);
                 // terminate the application and throw an exception
                 app.StopAsync().GetAwaiter().GetResult();
             }
@@ -40,5 +47,15 @@ namespace Topy_like_asp_webapi.Config
             var service = scope?.ServiceProvider.GetService<Seeder>();
             service?.SeedDataContext();
         }
+        async private static Task SeedDataToElasticsearch(IHost app)
+        {
+            var scopedFactory = app.Services.GetService<IServiceScopeFactory>();
+            using var scope = scopedFactory?.CreateScope();
+            var service = scope?.ServiceProvider.GetService<ElasticsearchSeedr>();
+            await service?.SeedDataToElasticsearch();
+        }
+
+
+
     }
 }
