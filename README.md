@@ -7,17 +7,26 @@
 - [ ] file upload
 - [ ] Oauth 
 - [ ] role based authroization
+- [x] Elastic search setup
 
 
 ## To-do
-- [ ] imple req and res schema (dto like) 
+- [ ] imple Medidator
 - [ ] setup entities and relations
 - [ ] setup controllers
 - [ ] setup services 
-- [ ] setup repos 
+- [x] setup repos R-DB
+- [x] setup repos Elastic search
 - [x] db connection and migration
 - [ ] error handling
-- entity
-    - [ ] user (identity, Oauth, role-based)
-        - [x] sign in Oauth  
-        - [ ] add roles (enums)
+
+
+### Tommorow to-do
+
+- [ ] impl all elastic search repo
+- [ ] impl Async R-DB repo 
+- [ ] impl Async R-DB seeder
+- __Optinal__
+    - [ ] 
+    - [ ] impl CQRS
+    - [ ] impl Mediator
