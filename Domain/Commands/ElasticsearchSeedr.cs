@@ -3,53 +3,115 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Elastic.Clients.Elasticsearch;
+using Elastic.Clients.Elasticsearch.QueryDsl;
 using Topy_like_asp_webapi.Domain.Entities;
 using Topy_like_asp_webapi.Domain.Repositories.Interfaces;
 
 namespace Topy_like_asp_webapi.Domain.Commands
 {
-    public class ElasticsearchSeedr(IElasticsearchRepository<User> userElasticsearchRepository, ILogger<ElasticsearchSeedr> logger)
+    public class ElasticsearchSeedr(
+        IElasticsearchRepository<User> userElasticsearchRepository,
+        IElasticsearchRepository<Space> spaceElasticsearchRepository,
+        ILogger<ElasticsearchSeedr> logger
+    )
     {
         private readonly IElasticsearchRepository<User> userElasticsearchRepository = userElasticsearchRepository;
+        private readonly IElasticsearchRepository<Space> spaceElasticsearchRepository = spaceElasticsearchRepository;
         private readonly ILogger<ElasticsearchSeedr> _logger = logger;
 
         async public Task SeedDataToElasticsearch()
         {
 
-            if (userElasticsearchRepository.SearchAsync("").Result.Count() == 0)
+
+            if (await userElasticsearchRepository.GetTotalAsync() == 0)
             {
 
-                for (int i = 0; i < 1000; i++)
+                for (int i = 0; i < 10001; i++)
                 {
                     var guid = Guid.NewGuid();
-                    User? user = new User()
-                    {
-                        Id = guid,
-                        GoogleId = "122334",
-                        Name = "test",
+                    User? user = new User();
 
-                    };
+                    if (i % 2 == 0)
+                    {
+                        guid = Guid.NewGuid();
+                        user = new User()
+                        {
+                            Id = guid,
+                            GoogleId = new Random().Next(i, i * i).ToString(),
+                            Name = Path.GetRandomFileName(),
+
+                        };
+                    }
+                    else
+                    {
+
+                        user = new User()
+                        {
+                            Id = guid,
+                            GoogleId = "122334",
+                            Name = "test",
+
+                        };
+                    }
 
                     bool res = await userElasticsearchRepository.CreateBulkAsync(new List<User> { user });
                     _logger.LogInformation("from SeedDataToElasticsearch: " + res.ToString());
+                    _logger.LogInformation("from SeedDataToElasticsearch: create");
                     user = null;
+
                 }
-                _logger.LogInformation("from SeedDataToElasticsearch: create");
+
+
+            }
+
+
+            if (await spaceElasticsearchRepository.GetTotalAsync() == 0)
+            {
+
+                for (int i = 0; i < 10001; i++)
+                {
+                    var guid = Guid.NewGuid();
+                    Space? space = new Space();
+
+                    guid = Guid.NewGuid();
+                    space = new Space()
+                    {
+                        Id = guid,
+                        Title = Path.GetRandomFileName(),
+                    };
+
+
+                    bool res = await spaceElasticsearchRepository.CreateBulkAsync(new List<Space> { space });
+                    _logger.LogInformation("from SeedDataToElasticsearch: " + res.ToString());
+                    _logger.LogInformation("from SeedDataToElasticsearch: create");
+                    space = null;
+
+                }
+
 
             }
 
 
 
-            // IEnumerable<User> users = await userElasticsearchRepository.SearchAsync("");
+            // var query = new WildcardQuery(nameof(Space.Title).ToLower());
 
-            // _logger.LogInformation("from SeedDataToElasticsearch: count:" + users.Count().ToString());
+            // query.Wildcard = "*";
+            // query.QueryName = "wildcard";
 
-            // foreach (User user in users)
-            // {
-            //     _logger.LogInformation("from SeedDataToElasticsearch: user " + user.ToString());
+            // _logger.LogInformation(query.QueryName);
+            // _logger.LogInformation(query.Value);
+            // _logger.LogInformation(query.Field.ToString());
 
-            // }
+            // IEnumerable<User> users = await userElasticsearchRepository.SearchAsync(query );
+            IEnumerable<Space> spaces = await spaceElasticsearchRepository.SearchAsync();
 
+
+            foreach (Space s in spaces)
+            {
+                _logger.LogInformation("from SeedDataToElasticsearch: space: " + s.ToString());
+            }
+
+            _logger.LogInformation("from SeedDataToElasticsearch: count:" + spaces.Count().ToString());
 
             // foreach (User user in users)
             // {
@@ -67,9 +129,9 @@ namespace Topy_like_asp_webapi.Domain.Commands
             // }
 
             _logger.LogInformation("from SeedDataToElasticsearch: out");
+
+
+
         }
-
-
-
     }
 }
