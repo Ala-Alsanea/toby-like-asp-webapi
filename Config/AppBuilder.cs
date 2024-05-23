@@ -25,7 +25,7 @@ namespace Topy_like_asp_webapi.Config
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Logging.ClearProviders();
             builder.Logging.AddConsole();
-            
+
             // R-Database registration
             // builder.Services.AddDbContext<DBContext>(opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("SqlServerConnectionString")));
             builder.Services.AddDbContext<DBContext>(opt => opt.UseNpgsql(builder.Configuration.GetConnectionString("PostgresConnectionString")));
@@ -38,9 +38,11 @@ namespace Topy_like_asp_webapi.Config
                 var nodes = settings.Nodes.Select(n => new Uri(n)).ToArray();
                 var pool = new StaticNodePool(nodes);
                 var clientSettings = new ElasticsearchClientSettings(pool)
-                    // .CertificateFingerprint(settings.CertificateFingerprint)
-                    // .Authentication(new ApiKey(settings.ApiKey))
-                    ;
+                        // .CertificateFingerprint(settings.CertificateFingerprint)
+                        // .Authentication(new ApiKey(settings.ApiKey))
+                        // .Authentication(new BasicAuthentication(settings.Username, settings.Password));
+
+                ;
                 return new ElasticsearchClient(clientSettings);
             });
 
