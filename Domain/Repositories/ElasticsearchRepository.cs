@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Elastic.Clients.Elasticsearch;
+using Elastic.Clients.Elasticsearch.Aggregations;
+using Elastic.Clients.Elasticsearch.Fluent;
 using Elastic.Clients.Elasticsearch.QueryDsl;
 using Topy_like_asp_webapi.Domain.Entities.Base;
 using Topy_like_asp_webapi.Domain.Repositories.Interfaces;
@@ -13,8 +15,7 @@ namespace Topy_like_asp_webapi.Domain.Repositories
     {
 
 
-        public string IndexName { get; set; }
-
+        public string IndexName;
         public readonly ElasticsearchClient _client;
         private readonly ILogger<T> _logger;
 
@@ -27,16 +28,25 @@ namespace Topy_like_asp_webapi.Domain.Repositories
             IndexName = typeof(T).Name.ToLower() + "s";
         }
 
+        public string GetIndexName()
+        {
+            return IndexName;
+        }
 
 
-        public async Task<IEnumerable<T>> SearchAsync(string query)
+        public async Task<IEnumerable<T>> SearchAsync(
+            Query query = null,
+            int size = 10
+             )
         {
             try
             {
-                SearchResponse<T> SearchAsync = await _client.SearchAsync<T>(s => s
-                    .Index(IndexName) // Specify the index
-                    ); // Match all documents
-
+                SearchRequest searchRequest = new SearchRequest(IndexName)
+                {
+                    Size = size,
+                    Query = query
+                };
+                SearchResponse<T> SearchAsync = await _client.SearchAsync<T>(searchRequest);
                 return SearchAsync.Documents;
             }
             catch (Exception ex)
@@ -77,6 +87,8 @@ namespace Topy_like_asp_webapi.Domain.Repositories
             try
             {
 
+                document.UpdatedAt = DateTime.Now;
+
                 IndexResponse indexResponse = await _client.IndexAsync(document, idx => idx.Index(IndexName));
 
                 if (!indexResponse.IsValidResponse)
@@ -115,5 +127,21 @@ namespace Topy_like_asp_webapi.Domain.Repositories
                 throw;
             }
         }
+
+        public async Task<long> GetTotalAsync()
+        {
+            try
+            {
+                CountResponse count = await _client.CountAsync<T>(s => s.Indices(IndexName));
+
+                return count.Count;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while getting total documents."); // Log error with exception
+                throw;
+            }
+        }
+
     }
 }
