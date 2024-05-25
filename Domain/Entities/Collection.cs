@@ -20,5 +20,10 @@ namespace Topy_like_asp_webapi.Domain.Entities
         public Space Space { get; set; }
         public ICollection<Tab> Tabs { get; set; }
 
+        public override string ToString()
+        {
+            return $"\ntitle: {Title} \nuser: {User} \nspace {Space}";
+        }
+
     }
 }
