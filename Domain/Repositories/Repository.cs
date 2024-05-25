@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using PostApi.Infrastructure.Pagination;
 using Topy_like_asp_webapi.Domain.DBContexts;
 using Topy_like_asp_webapi.Domain.Entities.Base;
@@ -13,47 +14,109 @@ namespace Topy_like_asp_webapi.Domain.Repositories
     public class Repository<T> : IRepository<T> where T : BaseEntity
     {
         private readonly DBContext _context;
+        private readonly ILogger<Repository<T>> _logger;
+
         public DbSet<T> entity { get; set; }
 
-        public Repository(DBContext context)
+        public Repository(DBContext context, ILogger<Repository<T>> logger)
         {
             _context = context;
+            _logger = logger;
             entity = context.Set<T>();
         }
 
-        public PagedList<T> All(int page, int pageSize)
+        public PagedList<T> Paged(int page, int pageSize)
         {
-            var result = entity.OrderBy(model => model.Id);
-            return PagedList<T>.Paginate(result, page, pageSize);
+
+            try
+            {
+                var result = entity.OrderBy(model => model.Id);
+                return PagedList<T>.Paginate(result, page, pageSize);
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"An error occurred while fetching the {nameof(T)}"); // Log error with exception
+                throw;
+            }
+
         }
 
-        public void Create(T model)
+        async public Task<T> GetAsync(Guid id)
         {
-            entity.Add(model);
-            _context.SaveChanges();
+
+            try
+            {
+                return await entity.FirstOrDefaultAsync(model => model.Id == id);
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"An error occurred while fetching the {nameof(T)}"); // Log error with exception
+                throw;
+            }
+
         }
 
-        public void Delete(T model)
+        async public Task<IEnumerable<T>> AllAsync()
         {
-            entity.Remove(model);
-            _context.SaveChanges();
+
+            try
+            {
+                return await entity.ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"An error occurred while fetching the {nameof(T)}"); // Log error with exception
+                throw;
+            }
         }
 
-        public T Get(Guid id)
+        async public Task<bool> CreateAsync(T model)
         {
-            return entity.FirstOrDefault(model => model.Id == id);
+            try
+            {
+                await entity.AddAsync(model);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"An error occurred while creating the {nameof(T)} "); // Log error with exception
+                throw;
+            }
         }
 
-        public IEnumerable<T> Index()
+        async public Task<bool> DeleteAsync(T model)
         {
-            return entity.ToList();
+
+            try
+            {
+                entity.Remove(model);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"An error occurred while deleting the {nameof(T)}"); // Log error with exception
+                throw;
+            }
         }
 
-        public void Update(T model)
+        async public Task<bool> UpdateAsync(T model)
         {
-            _context.Entry(model).State = EntityState.Modified;
-            model.UpdatedAt = DateTime.UtcNow;
-            _context.SaveChanges();
+            try
+            {
+                _context.Entry(model).State = EntityState.Modified;
+                model.UpdatedAt = DateTime.UtcNow;
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"An error occurred while fetching the {nameof(T)}"); // Log error with exception
+                throw;
+            }
         }
 
 

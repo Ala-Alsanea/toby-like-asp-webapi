@@ -14,18 +14,14 @@ namespace Topy_like_asp_webapi.Domain.Repositories.Interfaces
         public DbSet<T> entity { get; set; }
 
 
-        // PagedList<T> All(int page, int pageSize);
-        public PagedList<T> All(int page, int pageSize);
+        public PagedList<T> Paged(int page, int pageSize);
+        public Task<T>? GetAsync(Guid id);
+        public Task<IEnumerable<T>> AllAsync();
+        public Task<bool> CreateAsync(T model);
+        public Task<bool> DeleteAsync(T model);
+        public Task<bool> UpdateAsync(T model);
 
-        public void Create(T model);
 
-        public void Delete(T model);
-
-        public T? Get(Guid id);
-
-        public IEnumerable<T> Index();
-
-        public void Update(T model);
 
 
 
