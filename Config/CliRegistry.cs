@@ -19,7 +19,7 @@ namespace Topy_like_asp_webapi.Config
 
             if (args.Length == 1 && args[0].ToLower() == "seed-db")
             {
-                SeedData(app);
+                await SeedData(app);
                 // terminate the application and throw an exception
                 app.StopAsync().GetAwaiter().GetResult();
             }
@@ -40,12 +40,12 @@ namespace Topy_like_asp_webapi.Config
             service?.TruncateDatabase();
         }
 
-        private static void SeedData(IHost app)
+        async private static Task SeedData(IHost app)
         {
             var scopedFactory = app.Services.GetService<IServiceScopeFactory>();
             using var scope = scopedFactory?.CreateScope();
             var service = scope?.ServiceProvider.GetService<Seeder>();
-            service?.SeedDataContext();
+            await service?.SeedDataContext();
         }
         async private static Task SeedDataToElasticsearch(IHost app)
         {
