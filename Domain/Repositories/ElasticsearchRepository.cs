@@ -17,11 +17,11 @@ namespace Topy_like_asp_webapi.Domain.Repositories
 
         public string IndexName;
         public readonly ElasticsearchClient _client;
-        private readonly ILogger<T> _logger;
+        private readonly ILogger<ElasticsearchRepository<T>> _logger;
 
 
 
-        public ElasticsearchRepository(ElasticsearchClient client, ILogger<T> logger)
+        public ElasticsearchRepository(ElasticsearchClient client, ILogger<ElasticsearchRepository<T>> logger)
         {
             _client = client;
             _logger = logger;
@@ -34,10 +34,8 @@ namespace Topy_like_asp_webapi.Domain.Repositories
         }
 
 
-        public async Task<IEnumerable<T>> SearchAsync(
-            Query query = null,
-            int size = 10
-             )
+        // ? handle Paginate search
+        public async Task<IEnumerable<T>> SearchAsync(Query query = null, int size = 10)
         {
             try
             {
