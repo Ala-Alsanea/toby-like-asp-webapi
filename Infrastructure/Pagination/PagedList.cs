@@ -22,5 +22,10 @@ namespace PostApi.Infrastructure.Pagination
             var items = query.Skip((page - 1) * pageSize).Take(pageSize).ToList();
             return new PagedList<T>(items, page, pageSize, total);
         }
+
+        public override string ToString()
+        {
+            return $"\npage: {Page} \npagesize: {PageSize} \ntotal: {Total} \nHasNext: {HasNext} \nHasPrevious: {HasPrevious} \nitem: {Items} \n";
+        }
     }
 }
