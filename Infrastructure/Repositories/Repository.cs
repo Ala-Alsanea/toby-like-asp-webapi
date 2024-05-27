@@ -6,10 +6,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using PostApi.Infrastructure.Pagination;
 using Topy_like_asp_webapi.Domain.DBContexts;
-using Topy_like_asp_webapi.Domain.Entities.Base;
-using Topy_like_asp_webapi.Domain.Repositories.Interfaces;
+using Topy_like_asp_webapi.Infrastructure.Entities;
+using Topy_like_asp_webapi.Infrastructure.Repositories.Interfaces;
 
-namespace Topy_like_asp_webapi.Domain.Repositories
+namespace Topy_like_asp_webapi.Infrastructure.Repositories
 {
     public class Repository<T> : IRepository<T> where T : BaseEntity
     {

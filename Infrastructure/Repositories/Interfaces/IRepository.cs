@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using PostApi.Infrastructure.Pagination;
 using Topy_like_asp_webapi.Domain.DBContexts;
-using Topy_like_asp_webapi.Domain.Entities.Base;
+using Topy_like_asp_webapi.Infrastructure.Entities;
 
-namespace Topy_like_asp_webapi.Domain.Repositories.Interfaces
+namespace Topy_like_asp_webapi.Infrastructure.Repositories.Interfaces
 {
     public interface IRepository<T> where T : BaseEntity
     {

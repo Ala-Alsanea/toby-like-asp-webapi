@@ -6,10 +6,11 @@ using Elastic.Clients.Elasticsearch;
 using Elastic.Clients.Elasticsearch.Aggregations;
 using Elastic.Clients.Elasticsearch.Fluent;
 using Elastic.Clients.Elasticsearch.QueryDsl;
-using Topy_like_asp_webapi.Domain.Entities.Base;
-using Topy_like_asp_webapi.Domain.Repositories.Interfaces;
+using Topy_like_asp_webapi.Infrastructure.Entities;
+using Topy_like_asp_webapi.Infrastructure.Repositories.Interfaces;
 
-namespace Topy_like_asp_webapi.Domain.Repositories
+
+namespace Topy_like_asp_webapi.Infrastructure.Repositories
 {
     public class ElasticsearchRepository<T> : IElasticsearchRepository<T> where T : BaseEntity
     {
