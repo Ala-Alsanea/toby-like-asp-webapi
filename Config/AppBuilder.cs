@@ -10,9 +10,9 @@ using Microsoft.Extensions.Options;
 using Topy_like_asp_webapi.Domain.Commands;
 using Topy_like_asp_webapi.Domain.DBContexts;
 using Topy_like_asp_webapi.Domain.Entities;
-using Topy_like_asp_webapi.Domain.Entities.Base;
-using Topy_like_asp_webapi.Domain.Repositories;
-using Topy_like_asp_webapi.Domain.Repositories.Interfaces;
+using Topy_like_asp_webapi.Infrastructure.Repositories;
+using Topy_like_asp_webapi.Infrastructure.Repositories.Interfaces;
+
 
 namespace Topy_like_asp_webapi.Config
 {

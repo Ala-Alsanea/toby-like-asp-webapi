@@ -4,8 +4,8 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
-using Topy_like_asp_webapi.Domain.Entities.Base;
 using Topy_like_asp_webapi.Domain.Enums;
+using Topy_like_asp_webapi.Infrastructure.Entities;
 
 namespace Topy_like_asp_webapi.Domain.Entities
 {

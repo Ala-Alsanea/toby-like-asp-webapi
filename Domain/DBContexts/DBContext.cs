@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Topy_like_asp_webapi.Domain.Entities;
-using Topy_like_asp_webapi.Domain.Entities.Base;
 
 namespace Topy_like_asp_webapi.Domain.DBContexts
 {

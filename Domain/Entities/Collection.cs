@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Topy_like_asp_webapi.Domain.Entities.Base;
+using Topy_like_asp_webapi.Infrastructure.Entities;
 
 namespace Topy_like_asp_webapi.Domain.Entities
 {

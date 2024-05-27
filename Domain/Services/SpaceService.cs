@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using System.Xml.Serialization;
 using Elastic.Clients.Elasticsearch;
 using Topy_like_asp_webapi.Domain.Entities;
-using Topy_like_asp_webapi.Domain.Repositories.Interfaces;
+using Topy_like_asp_webapi.Infrastructure.Repositories.Interfaces;
 
 namespace Topy_like_asp_webapi.Domain.Services
 {

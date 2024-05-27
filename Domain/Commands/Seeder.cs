@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Elastic.Clients.Elasticsearch.Snapshot;
 using Microsoft.EntityFrameworkCore;
 using PostApi.Infrastructure.Pagination;
-using Topy_like_asp_webapi.Domain.DBContexts;
 using Topy_like_asp_webapi.Domain.Entities;
-using Topy_like_asp_webapi.Domain.Repositories.Interfaces;
+using Topy_like_asp_webapi.Infrastructure.Repositories.Interfaces;
 
 namespace Topy_like_asp_webapi.Domain.Commands
 {

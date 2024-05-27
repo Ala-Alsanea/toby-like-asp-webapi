@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Elastic.Clients.Elasticsearch;
 using Elastic.Clients.Elasticsearch.QueryDsl;
 using Topy_like_asp_webapi.Domain.Entities;
-using Topy_like_asp_webapi.Domain.Repositories.Interfaces;
+using Topy_like_asp_webapi.Infrastructure.Repositories.Interfaces;
 
 namespace Topy_like_asp_webapi.Domain.Commands
 {
