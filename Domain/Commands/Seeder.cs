@@ -27,41 +27,46 @@ namespace Topy_like_asp_webapi.Domain.Commands
         async public Task SeedDataContext()
         {
 
-            // for (int i = 0; i < 12; i++)
-            // {
-            //     User userLoop = new User()
-            //     {
-            //         GoogleId = "122334",
-            //         Name = "Loop " + i.ToString(),
 
-            //     };
+            if (0 == _userRepository.entity.Count())
+            {
 
-            //     if (i == 0)
-            //         userLoop.Role = Enums.Role.ADMIN;
+                for (int i = 0; i < 12; i++)
+                {
+                    User userLoop = new User()
+                    {
+                        GoogleId = "122334",
+                        Name = "Loop " + i.ToString(),
 
-            //     _userRepository.CreateAsync(userLoop).Wait();
-            //     _logger.LogInformation(userLoop.ToString());
+                    };
 
+                    if (i == 0)
+                        userLoop.Role = Enums.Role.ADMIN;
 
-            //     Space space = new Space()
-            //     {
-            //         Title = "space " + userLoop.Name,
-            //         User = userLoop
-
-            //     };
-            //     await _spaceRepository.CreateAsync(space);
+                    _userRepository.CreateAsync(userLoop).Wait();
+                    _logger.LogInformation(userLoop.ToString());
 
 
-            //     Collection collection = new Collection()
-            //     {
-            //         Title = "collection " + userLoop.Name,
-            //         Space = space,
-            //         User = userLoop
+                    Space space = new Space()
+                    {
+                        Title = "space " + userLoop.Name,
+                        User = userLoop
 
-            //     };
-            //     await _collectionRepository.CreateAsync(collection);
+                    };
+                    await _spaceRepository.CreateAsync(space);
 
-            // }
+
+                    Collection collection = new Collection()
+                    {
+                        Title = "collection " + userLoop.Name,
+                        Space = space,
+                        User = userLoop
+
+                    };
+                    await _collectionRepository.CreateAsync(collection);
+
+                }
+            }
 
 
 
