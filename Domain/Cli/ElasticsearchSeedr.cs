@@ -7,7 +7,7 @@ using Elastic.Clients.Elasticsearch.QueryDsl;
 using Topy_like_asp_webapi.Domain.Entities;
 using Topy_like_asp_webapi.Infrastructure.Repositories.Interfaces;
 
-namespace Topy_like_asp_webapi.Domain.Commands
+namespace Topy_like_asp_webapi.Domain.Cli
 {
     public class ElasticsearchSeedr(
         IElasticsearchRepository<User> userElasticsearchRepository,

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -25,13 +26,23 @@ namespace Topy_like_asp_webapi.Infrastructure.Repositories
             entity = context.Set<T>();
         }
 
-        public PagedList<T> Paged(int page, int pageSize)
+        public async Task<PagedList<T>> Paged(int page, int pageSize, params Expression<Func<T, object>>[] includes)
         {
 
             try
             {
-                var result = entity.OrderBy(model => model.Id);
-                return PagedList<T>.Paginate(result, page, pageSize);
+                IQueryable<T> result = entity.OrderBy(model => model.Id);
+
+
+                if (includes != null)
+                {
+                    foreach (var include in includes)
+                    {
+                        result = result.Include(include);
+                    }
+                }
+
+                return await PagedList<T>.Paginate(result, page, pageSize);
 
             }
             catch (Exception ex)
@@ -58,12 +69,21 @@ namespace Topy_like_asp_webapi.Infrastructure.Repositories
 
         }
 
-        async public Task<IEnumerable<T>> AllAsync()
+        async public Task<IEnumerable<T>> AllAsync(params Expression<Func<T, object>>[] includes)
         {
-
             try
             {
-                return await entity.ToListAsync();
+                IQueryable<T> query = entity;
+
+                if (includes != null)
+                {
+                    foreach (var include in includes)
+                    {
+                        query = query.Include(include);
+                    }
+                }
+
+                return await query.ToListAsync();
             }
             catch (Exception ex)
             {
