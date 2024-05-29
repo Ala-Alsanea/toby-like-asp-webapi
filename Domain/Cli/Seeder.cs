@@ -33,7 +33,7 @@ namespace Topy_like_asp_webapi.Domain.Cli
             if (0 == _userRepository.entity.Count())
             {
 
-                for (int i = 0; i < 100_000; i++)
+                for (int i = 0; i < 3; i++)
                 {
                     User userLoop = new User()
                     {
@@ -74,8 +74,8 @@ namespace Topy_like_asp_webapi.Domain.Cli
                         Title = "Tab " + userLoop.Name,
                         Collection = collection,
                         User = userLoop,
-                        Description="some description",
-                        Url="https://www.google.com"
+                        Description = "some description",
+                        Url = "https://www.google.com"
 
                     };
                     await _tabRepository.CreateAsync(tab);

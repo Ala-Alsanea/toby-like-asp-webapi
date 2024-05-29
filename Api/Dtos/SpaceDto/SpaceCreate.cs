@@ -12,6 +12,6 @@ namespace Topy_like_asp_webapi.Api.Dtos.SpaceDto
 
         // public User User { get; set; }
 
-        public ICollection<CollectionRead> Collections { get; set; }
+        public ICollection<CollectionCreate> Collections { get; set; }
     }
 }

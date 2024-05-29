@@ -10,7 +10,7 @@ namespace Topy_like_asp_webapi.Api.Dtos.CollectionDto
     {
                 public string Title { get; set; }
         // public User User { get; set; }
-        public SpaceRead Space { get; set; }
+        // public SpaceCreate Space { get; set; }
         // public ICollection<TabRead> Tabs { get; set; }
     }
 }

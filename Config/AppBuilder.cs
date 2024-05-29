@@ -49,6 +49,9 @@ namespace Topy_like_asp_webapi.Config
                 return new ElasticsearchClient(clientSettings);
             });
 
+            // configure midator
+            builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(Program).Assembly));
+
 
             // configure mapper
             builder.Services.AddAutoMapper(typeof(Program).Assembly);
@@ -72,6 +75,7 @@ namespace Topy_like_asp_webapi.Config
             // builder.Services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
             builder.Services.AddControllers().AddNewtonsoftJson(options => options.SerializerSettings.PreserveReferencesHandling = Newtonsoft.Json.PreserveReferencesHandling.Objects);
             builder.Services.AddSwaggerGen();
+            builder.Services.AddLogging();
 
             return builder;
         }
