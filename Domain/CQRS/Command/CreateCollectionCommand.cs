@@ -5,18 +5,19 @@ using System.Threading.Tasks;
 using AutoMapper;
 using MediatR;
 using Topy_like_asp_webapi.Domain.Entities;
+using Topy_like_asp_webapi.Infrastructure.ErrorHandling;
 using Topy_like_asp_webapi.Infrastructure.Repositories.Interfaces;
 
 namespace Topy_like_asp_webapi.Domain.CQRS.Command
 {
-    public class CreateCollectionCommand : IRequest<bool>
+    public class CreateCollectionCommand : IRequest<ResultReturn<bool>>
     {
         public string Title { get; set; }
 
     }
 
 
-    public class CreateCollectionCommandHandler : IRequestHandler<CreateCollectionCommand, bool>
+    public class CreateCollectionCommandHandler : IRequestHandler<CreateCollectionCommand, ResultReturn<bool>>
     {
         private readonly ILogger _logger;
         private readonly IMapper _mapper;
@@ -40,38 +41,29 @@ namespace Topy_like_asp_webapi.Domain.CQRS.Command
             _userRepository = userRepository;
         }
 
-        public async Task<bool> Handle(CreateCollectionCommand request, CancellationToken cancellationToken)
+        public async Task<ResultReturn<bool>> Handle(CreateCollectionCommand request, CancellationToken cancellationToken)
         {
             _logger.LogDebug("hi logger");
             Console.WriteLine("hi console");
-
-
 
             try
             {
 
                 Collection collection = _mapper.Map<Collection>(request);
-                
-                var spaces = await _spaceRepository.Paged(1,1,a=>a);
+
+                var spaces = _spaceRepository.Paged(1, 1, a => a).Result.Value;
                 collection.Space = spaces.Items.First();
 
-                var users = await _userRepository.Paged(1,1,a=>a);
+                var users = _userRepository.Paged(1, 1, a => a).Result.Value;
                 collection.User = users.Items.First();
 
-                await _repository.CreateAsync(collection);
+                ResultReturn<int> res = await _repository.CreateAsync(collection);
 
-                return await Task.FromResult(true);
+                return res.IsFailure ? ResultReturn.Fail<bool>("") : ResultReturn.Ok<bool>(true);
 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                _logger.LogError(ex, $"An error occurred while writing "); // Log error with exception
-
-                // Create a user-friendly error message
-                var errorMessage = $"An error occurred while writing the data. Please try again later.";
-
-                // Throw an exception with the error message
-                throw new Exception(errorMessage);
                 throw;
             }
         }

@@ -4,8 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using MediatR;
+using PostApi.Infrastructure.Pagination;
 using Topy_like_asp_webapi.Api.Dtos.CollectionDto;
 using Topy_like_asp_webapi.Domain.Entities;
+using Topy_like_asp_webapi.Infrastructure.ErrorHandling;
 using Topy_like_asp_webapi.Infrastructure.Repositories.Interfaces;
 
 namespace Topy_like_asp_webapi.Domain.CQRS.Query
@@ -30,8 +32,22 @@ namespace Topy_like_asp_webapi.Domain.CQRS.Query
 
         public async Task<CollectionPaged> Handle(GetPagedCollectionQuery request, CancellationToken cancellationToken)
         {
-            CollectionPaged collectionPaCollectionPaged = _mapper.Map<CollectionPaged>(await _repository.Paged(1, 10, a => a.Space, a => a.User, a => a.Tabs));
-            return collectionPaCollectionPaged;
+            try
+            {
+                ResultReturn<PagedList<Collection>> result = await _repository.Paged(1, 10, a => a.Space, a => a.User, a => a.Tabs);
+
+                if (result.IsFailure)
+                    throw new Exception();
+
+                CollectionPaged collectionPaCollectionPaged = _mapper.Map<CollectionPaged>(result.Value);
+                return collectionPaCollectionPaged;
+
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
         }
     }
 }

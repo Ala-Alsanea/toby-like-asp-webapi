@@ -6,6 +6,7 @@ using Elastic.Clients.Elasticsearch.Snapshot;
 using Microsoft.EntityFrameworkCore;
 using PostApi.Infrastructure.Pagination;
 using Topy_like_asp_webapi.Domain.Entities;
+using Topy_like_asp_webapi.Infrastructure.ErrorHandling;
 using Topy_like_asp_webapi.Infrastructure.Repositories.Interfaces;
 
 namespace Topy_like_asp_webapi.Domain.Cli
@@ -85,17 +86,17 @@ namespace Topy_like_asp_webapi.Domain.Cli
 
 
 
-            PagedList<Collection> page = await _collectionRepository.Paged(1, 7);
+            ResultReturn<PagedList<Collection>> page = await _collectionRepository.Paged(1, 7);
             _logger.LogInformation(page.ToString());
-            foreach (Collection item in page.Items)
+            foreach (Collection item in page.Value.Items)
             {
                 _logger.LogInformation(item.ToString());
 
             }
 
-            PagedList<Collection> page2 = await _collectionRepository.Paged(2, 7);
+            ResultReturn<PagedList<Collection>> page2 = await _collectionRepository.Paged(2, 7);
             _logger.LogInformation(page2.ToString());
-            foreach (Collection item in page2.Items)
+            foreach (Collection item in page2.Value.Items)
             {
                 _logger.LogInformation(item.ToString());
 
