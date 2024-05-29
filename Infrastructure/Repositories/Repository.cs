@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.IdentityModel.Tokens;
 using PostApi.Infrastructure.Pagination;
 using Topy_like_asp_webapi.Domain.DBContexts;
 using Topy_like_asp_webapi.Infrastructure.Entities;
@@ -34,7 +35,7 @@ namespace Topy_like_asp_webapi.Infrastructure.Repositories
                 IQueryable<T> result = entity.OrderBy(model => model.Id);
 
 
-                if (includes != null)
+                if (includes is null)
                 {
                     foreach (var include in includes)
                     {
@@ -48,7 +49,12 @@ namespace Topy_like_asp_webapi.Infrastructure.Repositories
             catch (Exception ex)
             {
                 _logger.LogError(ex, $"An error occurred while fetching the {nameof(T)}"); // Log error with exception
-                throw;
+
+                // Create a user-friendly error message
+                var errorMessage = $"An error occurred while fetching the data. Please try again later.";
+
+                // Throw an exception with the error message
+                throw new Exception(errorMessage);
             }
 
         }
@@ -64,18 +70,25 @@ namespace Topy_like_asp_webapi.Infrastructure.Repositories
             catch (Exception ex)
             {
                 _logger.LogError(ex, $"An error occurred while fetching the {nameof(T)}"); // Log error with exception
-                throw;
+
+                // Create a user-friendly error message
+                var errorMessage = $"An error occurred while fetching the data. Please try again later.";
+
+                // Throw an exception with the error message
+                throw new Exception(errorMessage);
             }
 
         }
 
-        async public Task<IEnumerable<T>> AllAsync(params Expression<Func<T, object>>[] includes)
+        async public Task<ICollection<T>> AllAsync(params Expression<Func<T, object>>[] includes)
         {
             try
             {
                 IQueryable<T> query = entity;
 
-                if (includes != null)
+                var len = includes.Length;
+
+                if (includes is null)
                 {
                     foreach (var include in includes)
                     {
@@ -88,7 +101,12 @@ namespace Topy_like_asp_webapi.Infrastructure.Repositories
             catch (Exception ex)
             {
                 _logger.LogError(ex, $"An error occurred while fetching the {nameof(T)}"); // Log error with exception
-                throw;
+
+                // Create a user-friendly error message
+                var errorMessage = $"An error occurred while fetching the data. Please try again later.";
+
+                // Throw an exception with the error message
+                throw new Exception(errorMessage);
             }
         }
 
@@ -102,8 +120,14 @@ namespace Topy_like_asp_webapi.Infrastructure.Repositories
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"An error occurred while creating the {nameof(T)} "); // Log error with exception
-                throw;
+                _logger.LogError(ex, $"An error occurred while writing the {nameof(T)} "); // Log error with exception
+                
+                // Create a user-friendly error message
+                var errorMessage = $"An error occurred while writing the data. Please try again later.";
+
+                // Throw an exception with the error message
+                throw new Exception(errorMessage);
+                
             }
         }
 
@@ -118,8 +142,14 @@ namespace Topy_like_asp_webapi.Infrastructure.Repositories
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"An error occurred while deleting the {nameof(T)}"); // Log error with exception
-                throw;
+                _logger.LogError(ex, $"An error occurred while writing the {nameof(T)} "); // Log error with exception
+                
+                // Create a user-friendly error message
+                var errorMessage = $"An error occurred while writing the data. Please try again later.";
+
+                // Throw an exception with the error message
+                throw new Exception(errorMessage);
+                
             }
         }
 
@@ -134,8 +164,14 @@ namespace Topy_like_asp_webapi.Infrastructure.Repositories
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"An error occurred while fetching the {nameof(T)}"); // Log error with exception
-                throw;
+                _logger.LogError(ex, $"An error occurred while writing the {nameof(T)} "); // Log error with exception
+                
+                // Create a user-friendly error message
+                var errorMessage = $"An error occurred while writing the data. Please try again later.";
+
+                // Throw an exception with the error message
+                throw new Exception(errorMessage);
+                
             }
         }
 

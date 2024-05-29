@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Topy_like_asp_webapi.Api.Dtos.CollectionDto;
+using Topy_like_asp_webapi.Domain.CQRS.Command;
+using Topy_like_asp_webapi.Domain.CQRS.Query;
 using Topy_like_asp_webapi.Domain.Entities;
 using Topy_like_asp_webapi.Infrastructure.Repositories.Interfaces;
 
@@ -14,31 +17,64 @@ namespace Topy_like_asp_webapi.Api.Controllers
     [Route("api/[controller]")]
     public class CollectionController : ControllerBase
     {
-        private readonly IRepository<Collection> _repository;
-        private readonly IMapper _mapper;
+        private readonly IMediator _mediator;
+        private readonly ISender _sender;
 
-        public CollectionController(IRepository<Collection> repository, IMapper mapper)
+        public CollectionController(IMediator mediator, ISender sender)
         {
-            _repository = repository;
-            _mapper = mapper;
+            _mediator = mediator;
+            _sender = sender;
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetCollections()
+        public async Task<IActionResult> GetPagedCollections()
         {
 
-            CollectionPaged collectionPaCollectionPaged = _mapper.Map<CollectionPaged>(await _repository.Paged(1, 10,a=>a.Space,a=>a.User,a=>a.Tabs));
+            try
+            {
+                GetPagedCollectionQuery query = new();
+                CollectionPaged collectionPaCollectionPaged = await _sender.Send(query);
 
-            return Ok(collectionPaCollectionPaged);
+                return Ok(collectionPaCollectionPaged);
+            }
+            catch (System.Exception ex)
+            {
+
+                return new ObjectResult(
+                    new { error = ex.Message })
+                {
+                    StatusCode = StatusCodes.Status500InternalServerError
+                };
+            }
         }
 
-        [HttpGet("all")]
 
-        public async Task<IActionResult> GetOneCollections()
+        [HttpPost]
+        public async Task<IActionResult> CreateCollection([FromBody] CreateCollectionCommand create)
         {
-            var hold = await _repository.AllAsync(a=>a.User);
-            CollectionRead col = _mapper.Map<CollectionRead>(hold.First());
-            return Ok( col );
+            try
+            {
+
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                  await _mediator.Send(create);
+
+                // await Task.Delay(1);
+                return Ok();
+            }
+            catch (System.Exception ex)
+            {
+
+                return new ObjectResult(
+                    new { error = ex.Message })
+                {
+                    StatusCode = StatusCodes.Status500InternalServerError
+                };
+            }
         }
+
     }
 }

@@ -7,6 +7,7 @@ using PostApi.Infrastructure.Pagination;
 using Topy_like_asp_webapi.Api.Dtos.CollectionDto;
 using Topy_like_asp_webapi.Api.Dtos.SpaceDto;
 using Topy_like_asp_webapi.Api.Dtos.TabDto;
+using Topy_like_asp_webapi.Domain.CQRS.Command;
 using Topy_like_asp_webapi.Domain.Entities;
 
 namespace Topy_like_asp_webapi.Domain.Mappers
@@ -21,6 +22,8 @@ namespace Topy_like_asp_webapi.Domain.Mappers
             
             // collection
             CreateMap<CollectionCreate, Collection>();
+            CreateMap<CreateCollectionCommand, Collection>();
+            
             CreateMap<Collection, CollectionRead>()
             .ForMember(dest => dest.User, opt => opt.MapFrom(src => src.User.Name))
             .ForMember(dest => dest.Space, opt => opt.MapFrom(src => src.Space.Title));
