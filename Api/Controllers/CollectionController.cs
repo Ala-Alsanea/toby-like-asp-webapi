@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Topy_like_asp_webapi.Api.Dtos;
 using Topy_like_asp_webapi.Api.Dtos.CollectionDto;
 using Topy_like_asp_webapi.Domain.CQRS.Command;
 using Topy_like_asp_webapi.Domain.CQRS.Query;
@@ -25,54 +26,56 @@ namespace Topy_like_asp_webapi.Api.Controllers
             _mediator = mediator;
             _sender = sender;
         }
-
         [HttpGet]
         public async Task<IActionResult> GetPagedCollections()
         {
+
+            ApiResponse<CollectionPaged> response = new();
 
             try
             {
                 GetPagedCollectionQuery query = new();
                 CollectionPaged collectionPaCollectionPaged = await _sender.Send(query);
 
-                return Ok(collectionPaCollectionPaged);
+                response.Data = collectionPaCollectionPaged;
+                response.Success = true;
+
+
+                return Ok(response);
             }
             catch (System.Exception ex)
             {
-
-                return new ObjectResult(
-                    new { error = ex.Message })
-                {
-                    StatusCode = StatusCodes.Status500InternalServerError
-                };
+                response.Message = ex.Message;
+                response.Success = false;
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
             }
         }
-
 
         [HttpPost]
         public async Task<IActionResult> CreateCollection([FromBody] CreateCollectionCommand create)
         {
+            ApiResponse<bool> response = new();
+            
             try
             {
-
                 if (!ModelState.IsValid)
                 {
                     return BadRequest(ModelState);
                 }
 
-                  await _mediator.Send(create);
+                var result = await _mediator.Send(create);
 
-                // await Task.Delay(1);
-                return Ok();
+                response.Data = result.Value;
+                response.Success = true;
+                response.Message = "collection has been created";
+                return Ok(response);
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
 
-                return new ObjectResult(
-                    new { error = ex.Message })
-                {
-                    StatusCode = StatusCodes.Status500InternalServerError
-                };
+                response.Message = ex.Message;
+                response.Success = false;
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
             }
         }
 

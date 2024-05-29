@@ -51,11 +51,11 @@ namespace Topy_like_asp_webapi.Domain.CQRS.Command
 
                 Collection collection = _mapper.Map<Collection>(request);
 
-                var spaces = _spaceRepository.Paged(1, 1, a => a).Result.Value;
-                collection.Space = spaces.Items.First();
+                var spaces = await _spaceRepository.Paged(1, 1, a => a.User);
+                collection.Space = spaces.Value.Items.First();
 
-                var users = _userRepository.Paged(1, 1, a => a).Result.Value;
-                collection.User = users.Items.First();
+                var users = await _userRepository.Paged(1, 1, a => a.Spaces);
+                collection.User = users.Value.Items.First();
 
                 ResultReturn<int> res = await _repository.CreateAsync(collection);
 
