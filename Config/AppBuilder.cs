@@ -72,8 +72,8 @@ namespace Topy_like_asp_webapi.Config
 
             builder.Services.AddEndpointsApiExplorer();
             // builder.Services.AddControllers();
-            // builder.Services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
-            builder.Services.AddControllers().AddNewtonsoftJson(options => options.SerializerSettings.PreserveReferencesHandling = Newtonsoft.Json.PreserveReferencesHandling.Objects);
+            builder.Services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+            // builder.Services.AddControllers().AddNewtonsoftJson(options => options.SerializerSettings.PreserveReferencesHandling = Newtonsoft.Json.PreserveReferencesHandling.);
             builder.Services.AddSwaggerGen();
             builder.Services.AddLogging();
 

@@ -9,6 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using PostApi.Infrastructure.Pagination;
 using Topy_like_asp_webapi.Domain.DBContexts;
 using Topy_like_asp_webapi.Infrastructure.Entities;
+using Topy_like_asp_webapi.Infrastructure.ErrorHandling;
 using Topy_like_asp_webapi.Infrastructure.Repositories.Interfaces;
 
 namespace Topy_like_asp_webapi.Infrastructure.Repositories
@@ -18,7 +19,11 @@ namespace Topy_like_asp_webapi.Infrastructure.Repositories
         private readonly DBContext _context;
         private readonly ILogger<Repository<T>> _logger;
 
+        private const string _errorMessage = "An error occurred in repository:\n ";
+
         public DbSet<T> entity { get; set; }
+
+
 
         public Repository(DBContext context, ILogger<Repository<T>> logger)
         {
@@ -27,60 +32,54 @@ namespace Topy_like_asp_webapi.Infrastructure.Repositories
             entity = context.Set<T>();
         }
 
-        public async Task<PagedList<T>> Paged(int page, int pageSize, params Expression<Func<T, object>>[] includes)
+        async public Task<ResultReturn<PagedList<T>>> Paged(int page, int pageSize, params Expression<Func<T, object>>[] includes)
         {
 
             try
             {
-                IQueryable<T> result = entity.OrderBy(model => model.Id);
+                IQueryable<T> query = entity.OrderBy(model => model.Id);
 
 
-                if (includes is null)
+                if (includes is not null)
                 {
-                    foreach (var include in includes)
+                    foreach (Expression<Func<T, object>>? include in includes)
                     {
-                        result = result.Include(include);
+                        query = query.Include(include);
                     }
                 }
 
-                return await PagedList<T>.Paginate(result, page, pageSize);
+                PagedList<T> result = await PagedList<T>.Paginate(query, page, pageSize);
+                return result.Items is null ? ResultReturn.Fail<PagedList<T>>("no item found") : ResultReturn.Ok<PagedList<T>>(result);
 
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"An error occurred while fetching the {nameof(T)}"); // Log error with exception
-
-                // Create a user-friendly error message
-                var errorMessage = $"An error occurred while fetching the data. Please try again later.";
-
-                // Throw an exception with the error message
-                throw new Exception(errorMessage);
+                _logger.LogError(ex, $"{_errorMessage}  \n {ex.Message}");
+                throw new Exception(_errorMessage + ex.Message);
+                // return ResultReturn.Fail<PagedList<T>>(_errorMessage + ex.Message);
             }
 
         }
 
-        async public Task<T> GetAsync(Guid id)
+        async public Task<ResultReturn<T>> GetAsync(Guid id)
         {
 
             try
             {
-                return await entity.FirstOrDefaultAsync(model => model.Id == id);
+                T? result = await entity.FirstOrDefaultAsync(model => model.Id == id);
+                return result is null ? ResultReturn.Fail<T>("no item found") : ResultReturn.Ok<T>(result);
 
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"An error occurred while fetching the {nameof(T)}"); // Log error with exception
-
-                // Create a user-friendly error message
-                var errorMessage = $"An error occurred while fetching the data. Please try again later.";
-
-                // Throw an exception with the error message
-                throw new Exception(errorMessage);
+                _logger.LogError(ex, $"{_errorMessage}  \n {ex.Message}"); // Log error with exception
+                throw new Exception(_errorMessage + ex.Message);
+                // return ResultReturn.Fail<T>(_errorMessage + ex.Message);
             }
 
         }
 
-        async public Task<ICollection<T>> AllAsync(params Expression<Func<T, object>>[] includes)
+        async public Task<ResultReturn<ICollection<T>>> AllAsync(params Expression<Func<T, object>>[] includes)
         {
             try
             {
@@ -88,7 +87,7 @@ namespace Topy_like_asp_webapi.Infrastructure.Repositories
 
                 var len = includes.Length;
 
-                if (includes is null)
+                if (includes is not null)
                 {
                     foreach (var include in includes)
                     {
@@ -96,82 +95,68 @@ namespace Topy_like_asp_webapi.Infrastructure.Repositories
                     }
                 }
 
-                return await query.ToListAsync();
+                List<T> result = await query.ToListAsync();
+
+                return result is null ? ResultReturn.Fail<ICollection<T>>("no item found") : ResultReturn.Ok<ICollection<T>>(result);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"An error occurred while fetching the {nameof(T)}"); // Log error with exception
-
-                // Create a user-friendly error message
-                var errorMessage = $"An error occurred while fetching the data. Please try again later.";
-
-                // Throw an exception with the error message
-                throw new Exception(errorMessage);
+                _logger.LogError(ex, $"{_errorMessage}  \n {ex.Message}"); // Log error with exception
+                throw new Exception(_errorMessage + ex.Message);
+                // return ResultReturn.Fail<ICollection<T>>(_errorMessage + ex.Message);
             }
         }
 
-        async public Task<bool> CreateAsync(T model)
+        async public Task<ResultReturn<int>> CreateAsync(T model)
         {
             try
             {
                 await entity.AddAsync(model);
-                await _context.SaveChangesAsync();
-                return true;
+                int result = await _context.SaveChangesAsync();
+                return result == 0 ? ResultReturn.Fail<int>("item not saved") : ResultReturn.Ok<int>(result);
+
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"An error occurred while writing the {nameof(T)} "); // Log error with exception
-                
-                // Create a user-friendly error message
-                var errorMessage = $"An error occurred while writing the data. Please try again later.";
-
-                // Throw an exception with the error message
-                throw new Exception(errorMessage);
-                
+                _logger.LogError(ex, $"{_errorMessage}  \n {ex.Message}"); // Log error with exception
+                throw new Exception(_errorMessage + ex.Message);
+                // return ResultReturn.Fail<int>(_errorMessage + ex.Message);
             }
         }
 
-        async public Task<bool> DeleteAsync(T model)
+        async public Task<ResultReturn<int>> DeleteAsync(T model)
         {
 
             try
             {
                 entity.Remove(model);
-                await _context.SaveChangesAsync();
-                return true;
+                int result = await _context.SaveChangesAsync();
+                return result == 0 ? ResultReturn.Fail<int>("item not deleted") : ResultReturn.Ok<int>(result);
+
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"An error occurred while writing the {nameof(T)} "); // Log error with exception
-                
-                // Create a user-friendly error message
-                var errorMessage = $"An error occurred while writing the data. Please try again later.";
-
-                // Throw an exception with the error message
-                throw new Exception(errorMessage);
-                
+                _logger.LogError(ex, $"{_errorMessage}  \n {ex.Message}"); // Log error with exception
+                throw new Exception(_errorMessage + ex.Message);
+                // return ResultReturn.Fail<int>(_errorMessage + ex.Message);
             }
         }
 
-        async public Task<bool> UpdateAsync(T model)
+        async public Task<ResultReturn<int>> UpdateAsync(T model)
         {
             try
             {
-                _context.Entry(model).State = EntityState.Modified;
+                entity.Entry(model).State = EntityState.Modified;
                 model.UpdatedAt = DateTime.UtcNow;
-                await _context.SaveChangesAsync();
-                return true;
+                int result = await _context.SaveChangesAsync();
+                return result == 0 ? ResultReturn.Fail<int>("item not updated") : ResultReturn.Ok<int>(result);
+
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"An error occurred while writing the {nameof(T)} "); // Log error with exception
-                
-                // Create a user-friendly error message
-                var errorMessage = $"An error occurred while writing the data. Please try again later.";
-
-                // Throw an exception with the error message
-                throw new Exception(errorMessage);
-                
+                _logger.LogError(ex, $"{_errorMessage}  \n {ex.Message}"); // Log error with exception
+                throw new Exception(_errorMessage + ex.Message);
+                // return ResultReturn.Fail<int>(_errorMessage + ex.Message);
             }
         }
 
