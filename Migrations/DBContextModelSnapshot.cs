@@ -147,6 +147,9 @@ namespace Topy_like_asp_webapi.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("GoogleId")
+                        .IsUnique();
+
                     b.ToTable("Users");
                 });
 

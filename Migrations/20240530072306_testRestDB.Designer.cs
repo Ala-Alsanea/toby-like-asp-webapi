@@ -12,7 +12,7 @@ using Topy_like_asp_webapi.Domain.DBContexts;
 namespace Topy_like_asp_webapi.Migrations
 {
     [DbContext(typeof(DBContext))]
-    [Migration("20240529095533_testRestDB")]
+    [Migration("20240530072306_testRestDB")]
     partial class testRestDB
     {
         /// <inheritdoc />
@@ -149,6 +149,9 @@ namespace Topy_like_asp_webapi.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("GoogleId")
+                        .IsUnique();
 
                     b.ToTable("Users");
                 });

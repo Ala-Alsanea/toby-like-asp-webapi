@@ -38,7 +38,7 @@ namespace Topy_like_asp_webapi.Domain.Cli
                 {
                     User userLoop = new User()
                     {
-                        GoogleId = "122334",
+                        GoogleId = "00100"+i.ToString(),
                         Name = "Loop " + i.ToString(),
 
                     };

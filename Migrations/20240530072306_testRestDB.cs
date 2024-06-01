@@ -125,6 +125,12 @@ namespace Topy_like_asp_webapi.Migrations
                 name: "IX_Tabs_UserId",
                 table: "Tabs",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_GoogleId",
+                table: "Users",
+                column: "GoogleId",
+                unique: true);
         }
 
         /// <inheritdoc />

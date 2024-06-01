@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Topy_like_asp_webapi.Api.Dtos;
 using Topy_like_asp_webapi.Api.Dtos.CollectionDto;
@@ -27,6 +28,7 @@ namespace Topy_like_asp_webapi.Api.Controllers
             _sender = sender;
         }
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetPagedCollections()
         {
 

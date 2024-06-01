@@ -15,7 +15,6 @@ namespace Topy_like_asp_webapi.Config
             app.UseCors("_myAllowSpecificOrigins");
 
             // initialize routes
-            app.MapControllers();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -23,8 +22,13 @@ namespace Topy_like_asp_webapi.Config
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+            app.UseAuthentication();
 
+            app.UseAuthorization();
+            
             app.UseHttpsRedirection();
+            
+            app.MapControllers();
 
             return app;
         }
